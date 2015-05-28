@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>log4net-Extensions</id>
+    <version>1.0.0</version>
+    <authors>Ryan Bartsch</authors>
+    <owners>yesmarket</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Extensions and helper utilities for the log4net logging framework.</description>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="log4net" version="2.0.3" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
