@@ -2,9 +2,10 @@
 <package >
   <metadata>
     <id>log4net-Extensions</id>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
     <authors>Ryan Bartsch</authors>
     <owners>yesmarket</owners>
+    <licenseUrl>http://www.gnu.org/licenses/gpl.html</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Extensions and helper utilities for the log4net logging framework.</description>
     <dependencies>
