@@ -2,7 +2,7 @@
 using System.IO;
 using log4net.Appender;
 
-namespace test
+namespace log4net.Extensions.Tests.Extensions
 {
     public static class MemoryAppenderExtensions
     {

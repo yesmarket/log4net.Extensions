@@ -1,16 +1,15 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using log4net;
 using log4net.Appender;
-using log4net.Core;
-using log4net.Extensions;
+using log4net.Extensions.Tests.Extensions;
+using log4net.Extensions.Tests.Helpers;
 using log4net.Layout;
-using log4net.Repository.Hierarchy;
+using Ploeh.AutoFixture;
 using SharpTestsEx;
 using Xunit;
 
-namespace test
+namespace log4net.Extensions.Tests
 {
     public class LogContextTests
     {
@@ -20,23 +19,12 @@ namespace test
 
         public LogContextTests()
         {
-            var hierarchy = (Hierarchy)LogManager.GetRepository();
+            var fixture = new Fixture();
+            fixture.Customizations.Add(new PatternLayoutSpecimenBuilder("%message %property{context1} %property{context2}"));
+            fixture.Customizations.Add(new MemoryAppenderSpecimenBuilder(fixture.Create<PatternLayout>()));
 
-            var patternLayout = new PatternLayout
-            {
-                ConversionPattern = "%message %property{context1} %property{context2}"
-            };
-            patternLayout.ActivateOptions();
-
-            _memoryAppender = new MemoryAppender
-            {
-                Layout = patternLayout
-            };
-            _memoryAppender.ActivateOptions();
-            hierarchy.Root.AddAppender(_memoryAppender);
-
-            hierarchy.Root.Level = Level.Debug;
-            hierarchy.Configured = true;
+            _memoryAppender = fixture.Create<MemoryAppender>();
+            LogManager.GetRepository().InjectMemoryAppender(_memoryAppender);
 
             _logContextFactory = new LogContextFactory();
             _logger = LogManager.GetLogger(GetType());

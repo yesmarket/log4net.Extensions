@@ -13,6 +13,16 @@ namespace log4net.Extensions
             return this;
         }
 
+        public ILogContext With<T>(params KeyValuePair<string, T>[] contexts)
+        {
+            if (contexts == null) return this;
+            foreach (var context in contexts)
+            {
+                With(context.Key, context.Value);
+            }
+            return this;
+        }
+
         public void Dispose()
         {
             foreach (var key in _keys)
