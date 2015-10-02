@@ -7,16 +7,21 @@ namespace log4net.AutoFac
 {
     public class LogContextInterceptor : IInterceptor
     {
-        private readonly KeyValuePair<string, object>[] _contexts;
+        private readonly IList<IContextProvider> _contexts;
 
-        public LogContextInterceptor(string key, object value)
+        public LogContextInterceptor() 
+            : this(new DefaultContextProvider())
         {
-            _contexts = new[] {new KeyValuePair<string, object>(key, value)};
         }
 
-        public LogContextInterceptor(params KeyValuePair<string, object>[] contexts)
+        public LogContextInterceptor(IContextProvider contextProvider)
+            : this(new[] {contextProvider})
         {
-            _contexts = contexts;
+        }
+
+        public LogContextInterceptor(params IContextProvider[] contexts)
+        {
+            _contexts = contexts.ToList();
         }
 
         public void Intercept(IInvocation invocation)

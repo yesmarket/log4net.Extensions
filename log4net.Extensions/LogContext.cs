@@ -1,19 +1,20 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace log4net.Extensions
 {
     public class LogContext : ILogContext
     {
         private readonly List<string> _keys = new List<string>();
- 
-        public ILogContext With<T>(string key, T value)
+
+        private ILogContext With<T>(string key, T value)
         {
             _keys.Add(key);
             LogicalThreadContext.Properties[key] = value.ToString();
             return this;
         }
 
-        public ILogContext With<T>(params KeyValuePair<string, T>[] contexts)
+        private ILogContext With<T>(params KeyValuePair<string, T>[] contexts)
         {
             if (contexts == null) return this;
             foreach (var context in contexts)
@@ -21,6 +22,18 @@ namespace log4net.Extensions
                 With(context.Key, context.Value);
             }
             return this;
+        }
+
+        public ILogContext With(IContextProvider contextProvider)
+        {
+            var keyValuePair = contextProvider.GetContext();
+            return With(keyValuePair.Key, keyValuePair.Value);
+        }
+
+        public ILogContext With(IList<IContextProvider> contextProviders)
+        {
+            var keyValuePairs = contextProviders.Select(provider => provider.GetContext());
+            return With(keyValuePairs.ToArray());
         }
 
         public void Dispose()
